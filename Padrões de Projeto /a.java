@@ -55,6 +55,12 @@ class PushNotificationFactory {
     }
 }
 
+class WhatsappFactory {
+    public static Notification create(int maxRetries) {
+        return Notification.getInstance("Whatsapp Server", new WhatsappAdaptor(new Whatsapp()), maxRetries);
+    }
+}
+
 class Email implements Server {
     public boolean notify(String message) {
         // envia email
@@ -76,6 +82,25 @@ class PushNotification implements Server {
     }
 }
 
+class Whatsapp {
+    public boolean sendMessage(String message) {
+        // envia mensagem whatsapp
+        return true;
+    }
+}
+
+class WhatsappAdaptor implements Server {
+    private Whatsapp whatsapp;
+
+    public WhatsappAdaptor(Whatsapp whatsapp) {
+        this.whatsapp = whatsapp;
+    }
+
+    public boolean notify(String message) {
+        return this.whatsapp.sendMessage(message);
+    }
+}
+
 class Test {
     public static void main(String[] args) {
         Test.testEmail();
@@ -83,18 +108,23 @@ class Test {
         Test.testPushNotification();
     }
 
-    public static void testEmail main() {
+    public static void testEmail() {
         Notification email = EmailNotificationFactory.create(3);
         email.notify("enviando um email");
     }
 
-    public static void testSMS main() {
+    public static void testSMS() {
         Notification sms = SMSNotificationFactory.create(3);
         sms.notify("enviando um sms");
     }
 
-    public static void testPushNotification main() {
+    public static void testPushNotification() {
         Notification pushNotification = PushNotificationFactory.create(3);
         pushNotification.notify("enviando um push notification");
+    }
+
+    public static void testWhatsapp() {
+        Notification whatsapp = WhatsappFactory.create(3);
+        whatsapp.notify("enviando uma mensagem do whatsapp");
     }
 }
