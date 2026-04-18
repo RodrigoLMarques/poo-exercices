@@ -81,3 +81,38 @@ class University implements Observer {
   }
 }
 
+// Test
+
+const paraiba = new PCD("Rio Paraíba do Sul");
+const jaguari = new PCD("Rio Jaguari");
+
+const unifesp = new University("UNIFESP");
+const fatec = new University("FATEC");
+const usp = new University("USP");
+
+unifesp.monitorPCD(paraiba);
+unifesp.monitorPCD(jaguari);
+fatec.monitorPCD(paraiba);
+usp.monitorPCD(jaguari);
+
+console.log("Atualização 1: Rio Paraíba do Sul");
+paraiba.updateData({
+  temperature: 25.5,
+  atmosphericPressure: 1012,
+  ph: 6.5,
+  humidity: 75,
+});
+
+console.log("\nAtualização 2: Rio Jaguari");
+jaguari.updateData({
+  temperature: 31,
+  atmosphericPressure: 1008,
+  ph: 7.5,
+  humidity: 60,
+});
+
+console.log("\nUnifesp para de monitorar o Rio Paraíba do Sul");
+unifesp.stopMonitoring(paraiba);
+
+console.log("\nAtualização 3: Rio Paraíba do Sul");
+paraiba.updateData({ temperature: 29.0, ph: 7 });
